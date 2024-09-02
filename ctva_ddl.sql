@@ -1,3 +1,4 @@
+\connect weather_db;
 
 CREATE TABLE weather_data (
     id SERIAL PRIMARY KEY,
