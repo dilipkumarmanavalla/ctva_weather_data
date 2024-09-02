@@ -10,11 +10,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./ctva/ctva_ddl.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./ctva_ddl.sql:/docker-entrypoint-initdb.d/init.sql
 
   web:
     build:
-      context: ./ctva/.
+      context: ./
     environment:
       - FLASK_APP=main.py
     ports:
