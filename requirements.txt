@@ -1,7 +1,8 @@
 Flask==2.2.5
 Flask-RESTful==0.3.9
 Flask-SQLAlchemy==2.5.1
-SQLAlchemy==1.4.48
+SQLAlchemy==1.4.48  # Downgrade to 1.4.x to be compatible with Flask-SQLAlchemy
 psycopg2-binary==2.9.6
 GitPython==3.1.32
-flasgger==0.9.5
+gunicorn==21.2.0  # Optional, for production deployment
+flasgger==0.9.5  # Use the latest stable version compatible with Flask 2.2.x

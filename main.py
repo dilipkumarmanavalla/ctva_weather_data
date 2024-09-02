@@ -3,11 +3,11 @@ import logging
 from flask import Flask, jsonify, request
 from flasgger import Swagger, swag_from
 from ctva_src import utils
-from ctva_src.ctva import load_data
+from ctva_src.ctva import get_weather_data, load_data
 from ctva_src.data_models import db, WeatherData, WeatherStats
 from settings import load_settings
 
-config = load_settings(os.getenv("CURRENT_ENV", 'test'))
+config, swag_config = load_settings(os.getenv("CURRENT_ENV", 'test'))
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -18,6 +18,23 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config["SQLALCHEMY_TRACK_MODIFICA
 db.init_app(app)
 swagger = Swagger(app)
 repo = utils.clone_repo(config)
+
+
+@app.route('/api/weather', methods=['GET'])
+@swag_from(swag_config['/api/weather'])
+def get_weather_data_api():
+    response = get_weather_data(request, WeatherData, False)
+    return jsonify(response), 200
+
+
+
+@app.route('/api/weather/stats', methods=['GET'])
+@swag_from(swag_config['/api/weather/stats'])
+def get_weather_stats_api():
+    response = get_weather_data(request, WeatherStats, True)
+    return jsonify(response), 200
+
+
 
 @app.route('/load/', methods=['GET'])
 def load():
